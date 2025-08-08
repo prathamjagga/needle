@@ -9,7 +9,7 @@ class NeedleLogger {
 
         // Google Sheets configuration (replace with your actual values)
         this.sheetsConfig = {
-            scriptUrl: 'http://localhost:3000/api/submit', // Using local proxy server
+            scriptUrl: '/api/submit', // Using Vercel serverless API
             sheetId: '164fKjeFto7M3-8gSNmcQuXMGLCJtazHEK6BUwlKLqRw' // Replace with your sheet ID
         };
 

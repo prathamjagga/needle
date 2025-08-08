@@ -1,18 +1,24 @@
 {
-  "name": "needle-break-logger-proxy",
+  "name": "needle-break-logger",
   "version": "1.0.0",
-  "description": "CORS proxy server for Needle Break Logger",
-  "main": "index.js",
+  "description": "Needle Break Logger - Garment Manufacturing Unit",
+  "main": "index.html",
   "scripts": {
-    "start": "node index.js",
-    "dev": "node index.js"
+    "start": "node server.js",
+    "dev": "node server.js",
+    "build": "echo 'No build step needed for static files'"
   },
   "dependencies": {
-    "express": "^4.18.2",
-    "cors": "^2.8.5",
     "node-fetch": "^2.7.0"
   },
-  "keywords": ["needle", "logger", "cors", "proxy"],
+  "devDependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5"
+  },
+  "engines": {
+    "node": ">=14.x"
+  },
+  "keywords": ["needle", "logger", "manufacturing", "vercel"],
   "author": "Needle Break Logger",
   "license": "ISC"
 }
