@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Professional needle break event logging system for garment manufacturing units">
+    <meta name="keywords" content="needle break, garment manufacturing, logging, factory floor, quality control">
+    <meta name="author" content="Needle Break Logger">
+    <meta name="theme-color" content="#4a90e2">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Needle Logger">
+    <meta name="msapplication-TileColor" content="#4a90e2">
+    <meta name="msapplication-config" content="browserconfig.xml">
+
+    <title>Needle Break Logger - Garment Manufacturing</title>
+
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json">
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="src/styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+
+    <!-- Favicons -->
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/icons/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon.png">
+    <link rel="mask-icon" href="assets/icons/safari-pinned-tab.svg" color="#4a90e2">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="header-content">
+                <i class="fas fa-industry"></i>
+                <h1>Needle Break Logger</h1>
+                <div class="header-info">
+                    <span id="current-date"></span>
+                    <span id="current-time"></span>
+                </div>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <!-- Navigation -->
+            <nav class="nav-tabs">
+                <button class="nav-tab active" id="log-tab" onclick="showTab('log')">
+                    <i class="fas fa-plus-circle"></i>
+                    Log New Event
+                </button>
+                <button class="nav-tab" id="view-tab" onclick="showTab('view')">
+                    <i class="fas fa-list"></i>
+                    Today's Submissions
+                </button>
+            </nav>
+
+            <!-- Log New Event Section -->
+            <section id="log-section" class="tab-content active">
+                <div class="form-container">
+                    <h2><i class="fas fa-clipboard-list"></i> Log Broken Needle Event</h2>
+
+                    <form id="needle-form">
+                        <!-- Progress Indicator -->
+                        <div class="progress-container">
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="progress-fill"></div>
+                            </div>
+                            <div class="progress-text">
+                                <span id="current-step">1</span> of <span id="total-steps">12</span> fields completed
+                            </div>
+                        </div>
+
+                        <!-- Form Steps -->
+                        <div class="form-steps">
+                            <!-- Step 1: Department -->
+                            <div class="form-step active" id="step-1">
+                                <div class="field-group">
+                                    <label for="department" class="field-label">
+                                        <i class="fas fa-building"></i>
+                                        Department <span class="required">*</span>
+                                    </label>
+                                    <select id="department" name="department" required>
+                                        <option value="">Select Department</option>
+                                        <option value="Production">Production</option>
+                                        <option value="Finishing">Finishing</option>
+                                        <option value="Sampling">Sampling</option>
+                                    </select>
+                                </div>
+                                <div class="step-navigation">
+                                    <button type="button" class="btn btn-primary" onclick="nextStep(1)">Next</button>
+                                </div>
+                            </div>
+
+                            <!-- Step 2: Incharge Name -->
+                            <div class="form-step" id="step-2">
+                                <div class="field-group">
+                                    <label for="incharge-name" class="field-label">
+                                        <i class="fas fa-user-tie"></i>
+                                        Needle Room Incharge Name <span class="required">*</span>
+                                    </label>
+                                    <input type="text" id="incharge-name" name="incharge-name" placeholder="Enter incharge name" required>
+                                </div>
+                                <div class="step-navigation">
+                                    <button type="button" class="btn btn-secondary" onclick="prevStep(2)">Previous</button>
+                                    <button type="button" class="btn btn-primary" onclick="nextStep(2)">Next</button>
+                                </div>
+                            </div>
+
+                            <!-- Step 3: Date -->
+                            <div class="form-step" id="step-3">
+                                <div class="field-group">
+                                    <label for="event-date" class="field-label">
+                                        <i class="fas fa-calendar"></i>
+                                        Date <span class="required">*</span>
+                                    </label>
+                                    <input type="date" id="event-date" name="event-date" required>
+                                </div>
+                                <div class="step-navigation">
+                                    <button type="button" class="btn btn-secondary" onclick="prevStep(3)">Previous</button>
+                                    <button type="button" class="btn btn-primary" onclick="nextStep(3)">Next</button>
+                                </div>
+                            </div>
+
+                            <!-- Step 4: Time -->
+                            <div class="form-step" id="step-4">
+                                <div class="field-group">
+                                    <label for="event-time" class="field-label">
+                                        <i class="fas fa-clock"></i>
+                                        Time <span class="required">*</span>
+                                    </label>
+                                    <input type="time" id="event-time" name="event-time" required>
+                                </div>
+                                <div class="step-navigation">
+                                    <button type="button" class="btn btn-secondary" onclick="prevStep(4)">Previous</button>
+                                    <button type="button" class="btn btn-primary" onclick="nextStep(4)">Next</button>
+                                </div>
+                            </div>
+
+                            <!-- Step 5: Machine No -->
+                            <div class="form-step" id="step-5">
+                                <div class="field-group">
+                                    <label for="machine-no" class="field-label">
+                                        <i class="fas fa-cogs"></i>
+                                        Machine No. <span class="required">*</span>
+                                    </label>
+                                    <input type="text" id="machine-no" name="machine-no" placeholder="Enter machine number" required>
+                                </div>
+                                <div class="step-navigation">
+                                    <button type="button" class="btn btn-secondary" onclick="prevStep(5)">Previous</button>
+                                    <button type="button" class="btn btn-primary" onclick="nextStep(5)">Next</button>
+                                </div>
+                            </div>
+
+                            <!-- Step 6: Line Number -->
+                            <div class="form-step" id="step-6">
+                                <div class="field-group">
+                                    <label for="line-no" class="field-label">
+                                        <i class="fas fa-stream"></i>
+                                        Line Number <span class="required">*</span>
+                                    </label>
+                                    <input type="text" id="line-no" name="line-no" placeholder="Enter line number" required>
+                                </div>
+                                <div class="step-navigation">
+                                    <button type="button" class="btn btn-secondary" onclick="prevStep(6)">Previous</button>
+                                    <button type="button" class="btn btn-primary" onclick="nextStep(6)">Next</button>
+                                </div>
+                            </div>
+
+                            <!-- Step 7: Machine Type -->
+                            <div class="form-step" id="step-7">
+                                <div class="field-group">
+                                    <label for="machine-type" class="field-label">
+                                        <i class="fas fa-wrench"></i>
+                                        Type of Machine <span class="required">*</span>
+                                    </label>
+                                    <select id="machine-type" name="machine-type" required>
+                                        <option value="">Select Machine Type</option>
+                                        <optgroup label="SN Series">
+                                            <!-- SN-01 to SN-274 -->
+                                        </optgroup>
+                                        <optgroup label="O/L Series (5 Thread)">
+                                            <!-- O/L-01 to O/L-19 -->
+                                        </optgroup>
+                                        <optgroup label="O/L Series (4 Thread)">
+                                            <!-- O/L-01 to O/L-34 -->
+                                        </optgroup>
+                                        <optgroup label="F/L Series">
+                                            <!-- F/L-01 to F/L-08 -->
+                                        </optgroup>
+                                    </select>
+                                </div>
+                                <div class="step-navigation">
+                                    <button type="button" class="btn btn-secondary" onclick="prevStep(7)">Previous</button>
+                                    <button type="button" class="btn btn-primary" onclick="nextStep(7)">Next</button>
+                                </div>
+                            </div>
+
+                            <!-- Step 8: Needle Type -->
+                            <div class="form-step" id="step-8">
+                                <div class="field-group">
+                                    <label for="needle-type" class="field-label">
+                                        <i class="fas fa-syringe"></i>
+                                        Type of Needle <span class="required">*</span>
+                                    </label>
+                                    <select id="needle-type" name="needle-type" required>
+                                        <option value="">Select Needle Type</option>
+                                        <option value="DBX1-75/11">DBX1-75/11</option>
+                                        <option value="DBX1-65/9">DBX1-65/9</option>
+                                        <option value="DCX1-75/11">DCX1-75/11</option>
+                                        <option value="UYX128-75/11">UYX128-75/11</option>
+                                        <option value="DBX1-55/7">DBX1-55/7</option>
+                                        <option value="DCX1-65/9">DCX1-65/9</option>
+                                        <option value="DCX1-90/14">DCX1-90/14</option>
+                                        <option value="DPX5-75/11">DPX5-75/11</option>
+                                        <option value="DPX5-90/14">DPX5-90/14</option>
+                                        <option value="DBX1-90/14">DBX1-90/14</option>
+                                        <option value="DPX17-90/14">DPX17-90/14</option>
+                                        <option value="UYX128-90/14">UYX128-90/14</option>
+                                        <option value="(B-64)-TVX64-130/21">(B-64)-TVX64-130/21</option>
+                                        <option value="TVX64-90/14">TVX64-90/14</option>
+                                        <option value="TVX64-110/18">TVX64-110/18</option>
+                                        <option value="TVX64-100/16">TVX64-100/16</option>
+                                        <option value="UYX128-65/9">UYX128-65/9</option>
+                                    </select>
+                                </div>
+                                <div class="step-navigation">
+                                    <button type="button" class="btn btn-secondary" onclick="prevStep(8)">Previous</button>
+                                    <button type="button" class="btn btn-primary" onclick="nextStep(8)">Next</button>
+                                </div>
+                            </div>
+
+                            <!-- Step 9: Supervisor -->
+                            <div class="form-step" id="step-9">
+                                <div class="field-group">
+                                    <label for="supervisor-name" class="field-label">
+                                        <i class="fas fa-user-check"></i>
+                                        Supervisor Name or Signature <span class="required">*</span>
+                                    </label>
+                                    <input type="text" id="supervisor-name" name="supervisor-name" placeholder="Enter supervisor name" required>
+                                </div>
+                                <div class="step-navigation">
+                                    <button type="button" class="btn btn-secondary" onclick="prevStep(9)">Previous</button>
+                                    <button type="button" class="btn btn-primary" onclick="nextStep(9)">Next</button>
+                                </div>
+                            </div>
+
+                            <!-- Step 10: Machine Operator -->
+                            <div class="form-step" id="step-10">
+                                <div class="field-group">
+                                    <label for="operator-name" class="field-label">
+                                        <i class="fas fa-user"></i>
+                                        Machine Operator Name <span class="required">*</span>
+                                    </label>
+                                    <input type="text" id="operator-name" name="operator-name" placeholder="Enter operator name" required>
+                                </div>
+                                <div class="step-navigation">
+                                    <button type="button" class="btn btn-secondary" onclick="prevStep(10)">Previous</button>
+                                    <button type="button" class="btn btn-primary" onclick="nextStep(10)">Next</button>
+                                </div>
+                            </div>
+
+                            <!-- Step 11: Image Upload -->
+                            <div class="form-step" id="step-11">
+                                <div class="field-group">
+                                    <label for="needle-image" class="field-label">
+                                        <i class="fas fa-camera"></i>
+                                        Upload Broken Needle Image
+                                    </label>
+                                    <div class="file-upload-area" id="file-upload-area">
+                                        <input type="file" id="needle-image" name="needle-image" accept="image/*" style="display: none;">
+                                        <div class="upload-content">
+                                            <i class="fas fa-cloud-upload-alt"></i>
+                                            <p>Click to upload or drag and drop</p>
+                                            <small>PNG, JPG, JPEG up to 5MB</small>
+                                        </div>
+                                    </div>
+                                    <div id="image-preview" class="image-preview"></div>
+                                </div>
+                                <div class="step-navigation">
+                                    <button type="button" class="btn btn-secondary" onclick="prevStep(11)">Previous</button>
+                                    <button type="button" class="btn btn-primary" onclick="nextStep(11)">Next</button>
+                                </div>
+                            </div>
+
+                            <!-- Step 12: Remarks -->
+                            <div class="form-step" id="step-12">
+                                <div class="field-group">
+                                    <label for="remarks" class="field-label">
+                                        <i class="fas fa-comment-alt"></i>
+                                        Remarks
+                                    </label>
+                                    <textarea id="remarks" name="remarks" placeholder="Enter any additional remarks or observations..." rows="4"></textarea>
+                                </div>
+                                <div class="step-navigation">
+                                    <button type="button" class="btn btn-secondary" onclick="prevStep(12)">Previous</button>
+                                    <button type="button" class="btn btn-success" onclick="reviewSubmission()">
+                                        <i class="fas fa-eye"></i>
+                                        Review & Submit
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Review Step -->
+                            <div class="form-step" id="step-review">
+                                <div class="review-container">
+                                    <h3><i class="fas fa-clipboard-check"></i> Review Your Submission</h3>
+                                    <div id="review-content" class="review-content"></div>
+                                    <div class="step-navigation">
+                                        <button type="button" class="btn btn-secondary" onclick="editSubmission()">
+                                            <i class="fas fa-edit"></i>
+                                            Edit
+                                        </button>
+                                        <button type="submit" class="btn btn-success" id="submit-btn">
+                                            <i class="fas fa-paper-plane"></i>
+                                            Submit Entry
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </section>
+
+            <!-- Today's Submissions Section -->
+            <section id="view-section" class="tab-content">
+                <div class="submissions-container">
+                    <h2><i class="fas fa-list"></i> Today's Submissions</h2>
+                    <div class="submissions-header">
+                        <div class="submissions-count">
+                            <span id="submissions-count">0</span> entries logged today
+                        </div>
+                        <button class="btn btn-primary" onclick="refreshSubmissions()">
+                            <i class="fas fa-sync-alt"></i>
+                            Refresh
+                        </button>
+                    </div>
+                    <div id="submissions-list" class="submissions-list">
+                        <div class="no-submissions">
+                            <i class="fas fa-clipboard"></i>
+                            <p>No submissions recorded today</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Loading Overlay -->
+        <div id="loading-overlay" class="loading-overlay">
+            <div class="loading-content">
+                <div class="spinner"></div>
+                <p id="loading-text">Submitting your entry...</p>
+            </div>
+        </div>
+
+        <!-- Success Modal -->
+        <div id="success-modal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <i class="fas fa-check-circle success-icon"></i>
+                    <h3>Entry Submitted Successfully!</h3>
+                </div>
+                <div class="modal-body">
+                    <p>Your needle break event has been logged and saved to the system.</p>
+                    <div id="submission-summary" class="submission-summary"></div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" onclick="newEntry()">
+                        <i class="fas fa-plus"></i>
+                        Log New Entry
+                    </button>
+                    <button class="btn btn-secondary" onclick="closeModal()">
+                        <i class="fas fa-eye"></i>
+                        View Submissions
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Error Modal -->
+        <div id="error-modal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <i class="fas fa-exclamation-circle error-icon"></i>
+                    <h3>Submission Error</h3>
+                </div>
+                <div class="modal-body">
+                    <p id="error-message">An error occurred while submitting your entry. Please try again.</p>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" onclick="closeErrorModal()">
+                        <i class="fas fa-redo"></i>
+                        Try Again
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="src/app.js"></script>
+</body>
+</html>
