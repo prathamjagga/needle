@@ -143,6 +143,12 @@ app.get('/api/test-script', async (req, res) => {
   }
 });
 
+
+// home page
+app.get("/", async (req, res) => {
+  res.sendFile(path.join(__dirname, "index.html"));
+});
+
 // Health check endpoint
 app.get('/api/health', (req, res) => {
   res.json({
