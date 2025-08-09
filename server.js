@@ -14,7 +14,7 @@ app.use(cors());
 app.use(express.json());
 
 // Serve static files from current directory
-app.use(express.static('.'));
+app.use(express.static(path.join(__dirname)));
 
 // Proxy endpoint for Google Apps Script
 app.post('/api/submit', async (req, res) => {
