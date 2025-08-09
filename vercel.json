@@ -1,23 +1,10 @@
 {
-  "version": 2,
-  "builds": [
-    {
-      "src": "api/**/*.js",
-      "use": "@vercel/node"
+  "functions": {
+    "api/submit.js": {
+      "runtime": "@vercel/node@18.x"
     },
-    {
-      "src": "**",
-      "use": "@vercel/static"
+    "api/test.js": {
+      "runtime": "@vercel/node@18.x"
     }
-  ],
-  "routes": [
-    {
-      "src": "/api/(.*)",
-      "dest": "/api/$1"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/$1"
-    }
-  ]
+  }
 }
